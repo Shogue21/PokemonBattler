@@ -54,7 +54,7 @@ Subtasks
 This one is pretty straight forward. I'm just going to set up a user system that stores user information inside a database. The sign up/sign in options will be in the header and they will be relatively simple pages. An interesting idea might be to set up some kind of password recovery/reset system.
 This should take 2-4 days max.
 
-### Milestone 4: Everything Else | Estimated Timeline: 1-2 weeks
+### Milestone 4: Everything Else | Estimated Timeline: 2-3 weeks
 Goal: Move game logic from original Java project to this and set up game page.
 
 Subtasks
