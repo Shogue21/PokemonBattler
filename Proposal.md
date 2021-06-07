@@ -1,5 +1,8 @@
 ## Project concept description
 - Create a front-end view of my original Pokemon Battler Java project
+  - Pokemon battling system.
+  - User chooses 6 different Pokemon, computer choose 6 random different pokemon.
+  - Players fight until a player has 0 useable Pokemon.
 - Create user accounts and save game to user.
 - Data saved to a Postgres database
 
