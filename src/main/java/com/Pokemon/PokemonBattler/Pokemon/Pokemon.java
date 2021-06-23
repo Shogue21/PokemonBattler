@@ -1,19 +1,24 @@
 package com.Pokemon.PokemonBattler.Pokemon;
 
 import com.Pokemon.PokemonBattler.Moves.Move;
+import com.Pokemon.PokemonBattler.MovesList.MovesList;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "assigned_pokemon")
+@Table(name = "assigned_pokemon", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "team"})})
 public @Data class Pokemon implements java.io.Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
     @Column(nullable = false)
     private String type;
@@ -29,18 +34,19 @@ public @Data class Pokemon implements java.io.Serializable {
     private int speed;
     @Column(nullable = false)
     private String team;
+    @Column(nullable = false)
+    private boolean current;
 
-        private ArrayList<Move> moveList = new ArrayList<>();
-        private ArrayList<Move> allMoves = getAllMoves();
-
+    @Transient
+    private ArrayList<Move> moveList = new ArrayList<>();
 
         public Pokemon() {}
 
-        public Pokemon(String initName, String initType) {
+        public Pokemon(String initName, String initType, String initTeam) {
             name = initName;
             type = initType;
+            team = initTeam;
             this.generateRandomStats();
-            this.assignRandomMoves();
         }
 
         public Pokemon(String loadedName, String loadedType, int loadedHealth, int loadedMaxHealth, int loadedAttack, int loadedDefense, int loadedSpeed){
@@ -51,18 +57,6 @@ public @Data class Pokemon implements java.io.Serializable {
             attack = loadedAttack;
             defense = loadedDefense;
             speed = loadedSpeed;
-            this.assignRandomMoves();
-        }
-
-        public void assignRandomMoves() {
-            while (this.getMoveList().size() != 4) {
-                int randomIndex = (int) Math.floor(Math.random() * allMoves.size());
-                Move randomMove = allMoves.get(randomIndex);
-                Move newMove = new Move(randomMove.getName(), randomMove.getType(), randomMove.getPower(), randomMove.getMaxPP(), randomMove.getAccuracy());
-                if ((newMove.getType().equalsIgnoreCase(this.getType()) || newMove.getType().equalsIgnoreCase("normal")) && this.getMoveList().stream().noneMatch(p->p.getName().equalsIgnoreCase(newMove.getName()))) {
-                    this.getMoveList().add(newMove);
-                }
-            }
         }
 
         public Move useRandomMove() {

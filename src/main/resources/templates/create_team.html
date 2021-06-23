@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Team</title>
+</head>
+<body>
+  <table>
+    <thead class="thead-dark">
+    <tr>
+      <th>Pokemon</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="pokemon: ${pokemonList}">
+      <td th:text="${pokemon.name}">Pokemon</td>
+    </tr>
+    </tbody>
+  </table>
+  <form th:action="@{/create}" th:object="${team}" method="POST">
+    <label for="pokemon1">Pokemon 1</label>
+    <select id="pokemon1" th:field="*{pokemon1.name}">
+      <option th:each="pokemon: ${pokemonList}" th:value="${pokemon.name}" th:text="${pokemon.name}"></option>
+    </select>
+    <label for="pokemon2">Pokemon 2</label>
+    <select id="pokemon2" th:field="*{pokemon2.name}">
+      <option th:each="pokemon: ${pokemonList}" th:value="${pokemon.name}" th:text="${pokemon.name}"></option>
+    </select>
+    <label for="pokemon3">Pokemon 3</label>
+    <select id="pokemon3" th:field="*{pokemon3.name}">
+      <option th:each="pokemon: ${pokemonList}" th:value="${pokemon.name}" th:text="${pokemon.name}"></option>
+    </select>
+    <label for="pokemon4">Pokemon 4</label>
+    <select id="pokemon4" th:field="*{pokemon4.name}">
+      <option th:each="pokemon: ${pokemonList}" th:value="${pokemon.name}" th:text="${pokemon.name}"></option>
+    </select>
+    <label for="pokemon5">Pokemon 5</label>
+    <select id="pokemon5" th:field="*{pokemon5.name}">
+      <option th:each="pokemon: ${pokemonList}" th:value="${pokemon.name}" th:text="${pokemon.name}"></option>
+    </select>
+    <label for="pokemon6">Pokemon 6</label>
+    <select id="pokemon6" th:field="*{pokemon6.name}">
+      <option th:each="pokemon: ${pokemonList}" th:value="${pokemon.name}" th:text="${pokemon.name}"></option>
+    </select>
+    <button type="submit">Create Team</button>
+  </form>
+</body>
+</html>

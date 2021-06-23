@@ -1,10 +1,15 @@
 package com.Pokemon.PokemonBattler.MovesList;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "moves")
-public class MovesList {
+@Data public class MovesList {
+
+    public MovesList() {}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

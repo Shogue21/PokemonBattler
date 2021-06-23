@@ -26,6 +26,8 @@ public @Data class Move implements java.io.Serializable {
     private int accuracy;
     @Column(nullable = false)
     private String pokemon;
+    @Column(nullable = false)
+    private String user;
 
     public Move() {}
 

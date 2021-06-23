@@ -1,7 +1,6 @@
 package com.Pokemon.PokemonBattler.PokemonList;
 
-import com.Pokemon.PokemonBattler.Pokemon.Pokemon;
-import com.Pokemon.PokemonBattler.Pokemon.PokemonRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
