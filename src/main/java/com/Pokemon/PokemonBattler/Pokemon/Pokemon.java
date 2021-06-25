@@ -1,17 +1,13 @@
 package com.Pokemon.PokemonBattler.Pokemon;
 
 import com.Pokemon.PokemonBattler.Moves.Move;
-import com.Pokemon.PokemonBattler.MovesList.MovesList;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "assigned_pokemon", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "team"})})
+@Table(name = "assigned_pokemon", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "username", "team"})})
 public @Data class Pokemon implements java.io.Serializable {
 
     @Id
@@ -33,6 +29,8 @@ public @Data class Pokemon implements java.io.Serializable {
     @Column(nullable = false)
     private int speed;
     @Column(nullable = false)
+    private String username;
+    @Column(nullable = false)
     private String team;
     @Column(nullable = false)
     private boolean current;
@@ -42,9 +40,10 @@ public @Data class Pokemon implements java.io.Serializable {
 
         public Pokemon() {}
 
-        public Pokemon(String initName, String initType, String initTeam) {
+        public Pokemon(String initName, String initType, String initUsername, String initTeam) {
             name = initName;
             type = initType;
+            username = initUsername;
             team = initTeam;
             this.generateRandomStats();
         }

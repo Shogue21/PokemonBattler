@@ -5,14 +5,14 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "assigned_moves")
+@Table(name = "assigned_moves", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "pokemon", "team", "username"})})
 public @Data class Move implements java.io.Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
     @Column(nullable = false)
     private String type;
@@ -27,7 +27,9 @@ public @Data class Move implements java.io.Serializable {
     @Column(nullable = false)
     private String pokemon;
     @Column(nullable = false)
-    private String user;
+    private String team;
+    @Column(nullable = false)
+    private String username;
 
     public Move() {}
 

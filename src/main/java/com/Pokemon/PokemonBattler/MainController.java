@@ -46,7 +46,10 @@ public class MainController {
     }
 
     @GetMapping("/create_team")
-    public String createPage(Model model) {
+    public String createPage(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (! pokemonRepository.findPokemonByUsernameAndTeam(userDetails.getUsername(), "User").isEmpty()) {
+            return "team_already_exists";
+        }
         List<PokemonList> pokemonList = pokemonListRepository.findAll();
         Pokemon pokemon1 = new Pokemon();
         Pokemon pokemon2 = new Pokemon();
@@ -75,6 +78,7 @@ public class MainController {
         pokemonService.createPokemon(p5.getName(), p5.getType(), username);
         PokemonList p6 = pokemonListRepository.findPokemonByName(team.pokemon6.getName());
         pokemonService.createPokemon(p6.getName(), p6.getType(), username);
+        pokemonService.createComTeam(username);
 
         return "redirect:/play";
     }
@@ -89,7 +93,7 @@ public class MainController {
     @GetMapping("/team")
     public String teamPage(Model model, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         String username = customUserDetails.getUsername();
-        List<Pokemon> userTeam = pokemonRepository.findPokemonByTeam(username);
+        List<Pokemon> userTeam = pokemonRepository.findPokemonByUsernameAndTeam(username, "User");
         model.addAttribute("userTeam", userTeam);
         return "team";
     }
@@ -98,8 +102,8 @@ public class MainController {
     public String teamDetailPage(@RequestParam String pokemon, Model model, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         String username = customUserDetails.getUsername();
 
-     Pokemon searchedPokemon = pokemonRepository.findPokemonByName(pokemon);
-     searchedPokemon.setMoveList(moveRepository.findMovesByPokemonAndUser(searchedPokemon.getName(), username));
+     Pokemon searchedPokemon = pokemonRepository.findPokemonByNameAndTeam(pokemon, username);
+     searchedPokemon.setMoveList(moveRepository.findMovesByPokemonAndTeam(searchedPokemon.getName(), username));
      model.addAttribute("pokemon", searchedPokemon);
         return "team_detail";
     }
