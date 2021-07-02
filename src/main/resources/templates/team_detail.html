@@ -6,44 +6,24 @@
     <title th:text="${pokemon.name}"></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="index.css">
 </head>
-<body>
+<body class="background">
 <div th:insert="homePage :: nav"></div>
 <a href="/team">Go Back</a>
-<div class="d-flex">
-    <div class="d-flex flex-column me-3 p-5">
-        <h3 th:text="${pokemon.name}"></h3>
-        <p>
-            <span th:text="${pokemon.health}"></span> / <span th:text="${pokemon.maxHealth}"></span>
-        </p>
+<div class="d-flex flew-row justify-content-center">
+    <div class="d-flex flex-column">
+        <h3 class="border-bottom text-center" th:text="${pokemon.name}"></h3>
+        <img class="detailImg" th:src="@{${'/pokemon/' + pokemon.name + '.png'}}"/>
     </div>
-    <div class="d-flex flex-column p-5">
-        <div class="d-flex">
-            <h5>Type: </h5>
-            <p class="align-self-center" th:text="${pokemon.type}"></p>
-        </div>
-        <div class="d-flex">
-            <h5>Attack: </h5>
-            <p class="align-self-center" th:text="${pokemon.attack}"></p>
-        </div>
-        <div class="d-flex">
-            <h5>Defense: </h5>
-            <p class="align-self-center" th:text="${pokemon.defense}"></p>
-        </div>
-        <div class="d-flex">
-            <h5>Speed: </h5>
-            <p class="align-self-center" th:text="${pokemon.speed}"></p>
-        </div>
+    <div class="d-flex flex-column border-start">
+        <h3 class="border-bottom text-center">Stats</h3>
+        <p>Health: <span th:text="${pokemon.health}"></span>/<span th:text="${pokemon.maxHealth}"></span></p>
+        <p>Attack: <span th:text="${pokemon.attack}"></span></p>
+        <p>Defense: <span th:text="${pokemon.defense}"></span></p>
+        <p>Speed: <span th:text="${pokemon.speed}"></span></p>
     </div>
-    <div class="d-flex flex-column p-5">
-        <ul th:each="move : ${pokemon.moveList}">
-            <li><b th:text="${move.name}"></b></li>
-            <li th:text="${move.type}"></li>
-            <li th:text="${move.power}"></li>
-            <li><span th:text="${move.PP}"></span> / <span th:text="${move.maxPP}"></span> </li>
-            <li th:text="${move.accuracy}"></li>
-        </ul>
-    </div>
+
 </div>
 </body>
 </html>

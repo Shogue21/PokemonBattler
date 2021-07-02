@@ -9,5 +9,8 @@ import java.util.List;
 @Repository
 public interface MoveRepository extends JpaRepository<Move, Long> {
 
-    ArrayList<Move> findMovesByPokemonAndTeam(String pokemon, String team);
+    ArrayList<Move> findMovesByPokemonAndUsernameAndTeam(String pokemon, String username, String team);
+    ArrayList<Move> findMovesByUsernameAndTeam(String username, String team);
+    Move findMoveByNameAndPokemonAndUsernameAndTeam(String name, String pokemon, String username, String team);
+
 }

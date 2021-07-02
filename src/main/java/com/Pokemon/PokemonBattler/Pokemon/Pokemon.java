@@ -40,11 +40,12 @@ public @Data class Pokemon implements java.io.Serializable {
 
         public Pokemon() {}
 
-        public Pokemon(String initName, String initType, String initUsername, String initTeam) {
+        public Pokemon(String initName, String initType, String initUsername, String initTeam, boolean initCurrent) {
             name = initName;
             type = initType;
             username = initUsername;
             team = initTeam;
+            current = initCurrent;
             this.generateRandomStats();
         }
 
@@ -63,7 +64,6 @@ public @Data class Pokemon implements java.io.Serializable {
                 int randomIndex = (int) Math.floor(Math.random() * moveList.size());
                 Move randomMove = moveList.get(randomIndex);
                 if (randomMove.getPP() != 0) {
-                    System.out.printf("%s used %s!\n", this.name, randomMove.getName());
                     return randomMove;
                 } else if (moveList.stream().allMatch(p->p.getPP()==0)) {
                     return new Move("Struggle", "Normal", 20, 1000, 100);

@@ -5,11 +5,36 @@
     <title>Play</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="index.css">
+    <script src="music.js"></script>
 </head>
-<body>
+<body id="play">
 <div th:insert="homePage :: nav"></div>
-<div>
-
+<div id="play-area">
+    <div id="comMon">
+        <b th:text="${comMon.name}"></b>
+        <p><span th:text="${comMon.health}"></span>/<span th:text="${comMon.maxHealth}"></span></p>
+        <img id="comMonImg" th:src="@{${'/pokemon/' + comMon.name + '.png'}}"/>
+    </div>
+    <div id="userMon">
+        <b th:text="${userMon.name}"></b>
+        <p><span th:text="${userMon.health}"></span>/<span th:text="${userMon.maxHealth}"></span></p>
+        <img id="userMonImg" th:src="@{${'/pokemon/' + userMon.name + '.png'}}"/>
+    </div>
+    <div id="control">
+        <div id="wwyd">
+            <p>What will <span th:text="${userMon.name}"></span> do?</p>
+        </div>
+        <div id="actions">
+            <form class="d-flex flex-row" th:action="@{/fight}" method="POST">
+                <button class="d-flex flex-column moveBTN" type="submit" name="move1"><span th:text="${userMon.moveList.get(0).name}"></span> <span><span th:text="${userMon.moveList.get(0).PP}"></span>/<span th:text="${userMon.moveList.get(0).maxPP}"></span></span></button>
+                <button class="d-flex flex-column moveBTN" type="submit" name="move2"><span th:text="${userMon.moveList.get(1).name}"></span> <span><span th:text="${userMon.moveList.get(1).PP}"></span>/<span th:text="${userMon.moveList.get(1).maxPP}"></span></span></button>
+                <button class="d-flex flex-column moveBTN" type="submit" name="move3"><span th:text="${userMon.moveList.get(2).name}"></span> <span><span th:text="${userMon.moveList.get(2).PP}"></span>/<span th:text="${userMon.moveList.get(2).maxPP}"></span></span></button>
+                <button class="d-flex flex-column moveBTN" type="submit" name="move4"><span th:text="${userMon.moveList.get(3).name}"></span> <span><span th:text="${userMon.moveList.get(3).PP}"></span>/<span th:text="${userMon.moveList.get(3).maxPP}"></span></span></button>
+            </form>
+            <a th:href="@{/switch_turn}"><button>Pokemon</button></a>
+        </div>
+    </div>
 </div>
 </body>
 </html>

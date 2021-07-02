@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service("ps")
 public class PokemonService {
@@ -36,7 +37,8 @@ public class PokemonService {
     public void assignMoves(Pokemon pokemon, String username, String team) {
         List<MovesList> allMoves = movesListRepository.findAll();
         while (pokemon.getMoveList().size() != 4) {
-            int randomIndex = (int) Math.floor(Math.random() * allMoves.size());
+            Random rand = new Random();
+            int randomIndex = rand.nextInt(allMoves.size());
             MovesList randomMove = allMoves.get(randomIndex);
             Move newMove = new Move(randomMove.getName(), randomMove.getType(), randomMove.getPower(), randomMove.getMaxPP(), randomMove.getAccuracy());
             if ((newMove.getType().equalsIgnoreCase(pokemon.getType()) || newMove.getType().equalsIgnoreCase("normal")) && pokemon.getMoveList().stream().noneMatch(p->p.getName().equalsIgnoreCase(newMove.getName()))) {
@@ -49,12 +51,13 @@ public class PokemonService {
         }
     }
 
-    public void createPokemon(String name, String type, String username) {
+    public void createPokemon(String name, String type, String username, boolean current) {
         Pokemon pokemon = new Pokemon();
         pokemon.setName(name);
         pokemon.setType(type);
         pokemon.setUsername(username);
         pokemon.setTeam("User");
+        pokemon.setCurrent(current);
         pokemon.generateRandomStats();
         assignMoves(pokemon, username, "User");
         pokemonRepository.save(pokemon);
@@ -64,13 +67,20 @@ public class PokemonService {
         ArrayList<PokemonList> pokemonList = pokemonListRepository.findAll();
         int teamCount = 0;
         while (teamCount < 6) {
-            List<Pokemon> comTeam = pokemonRepository.findAll();
+            List<Pokemon> comTeam = pokemonRepository.findPokemonByUsernameAndTeam(username, "Com");
             int randomIndex = (int) Math.floor(Math.random() * pokemonList.size());
             PokemonList randomPokemon = pokemonList.get(randomIndex);
-            if (!(comTeam.contains(randomPokemon))) {
-                Pokemon newPokemon = new Pokemon(randomPokemon.getName(), randomPokemon.getType(), username, "Com");
-                pokemonRepository.save(newPokemon);
-                assignMoves(newPokemon, username, "Com");
+            if (comTeam.stream().noneMatch(p -> p.getName() == randomPokemon.getName())) {
+                if (teamCount == 0) {
+                    Pokemon newPokemon = new Pokemon(randomPokemon.getName(), randomPokemon.getType(), username, "Com", true);
+                    pokemonRepository.save(newPokemon);
+                    assignMoves(newPokemon, username, "Com");
+                } else {
+                    Pokemon newPokemon = new Pokemon(randomPokemon.getName(), randomPokemon.getType(), username, "Com", false);
+                    pokemonRepository.save(newPokemon);
+                    assignMoves(newPokemon, username, "Com");
+                }
+
                 teamCount += 1;
             }
         }
@@ -160,6 +170,7 @@ public class PokemonService {
     }
 
     public void damagePokemon(Pokemon attacker, Pokemon defender, Move move) {
+        System.out.println(move.getName() + move.getTeam());
         double crit = 1.0;
         double stab = 1.0;
         if (Math.random() * 100 < 15) {
@@ -174,6 +185,36 @@ public class PokemonService {
         move.setPP(Math.max(0, move.getPP() - 1));
         if (defender.getHealth() <= 0) {
             defender.setHealth(0);
+            pokemonRepository.delete(defender);
+            defender.setCurrent(false);
+            pokemonRepository.save(defender);
+            if (defender.getTeam().equalsIgnoreCase("Com")) {
+                for (Pokemon comMon: pokemonRepository.findPokemonByUsernameAndTeam(defender.getUsername(), "Com")) {
+                    if (comMon.getHealth() != 0) {
+                        pokemonRepository.delete(comMon);
+                        comMon.setCurrent(true);
+                        pokemonRepository.save(comMon);
+                        break;
+                    }
+                }
+            }
         }
+        Pokemon defenderDelete = pokemonRepository.findPokemonByNameAndUsernameAndTeam(defender.getName(), defender.getUsername(), defender.getTeam());
+        pokemonRepository.delete(defenderDelete);
+        moveRepository.delete(move);
+        moveRepository.save(move);
+        pokemonRepository.save(defender);
+    }
+    public void swapPokemon(Pokemon pokemon) {
+        pokemonRepository.delete(pokemon);
+        pokemon.setCurrent(true);
+        pokemonRepository.save(pokemon);
+    }
+
+    public void gameOver(String username) {
+        pokemonRepository.deleteAll(pokemonRepository.findPokemonByUsernameAndTeam(username, "User"));
+        moveRepository.deleteAll(moveRepository.findMovesByUsernameAndTeam(username, "User"));
+        pokemonRepository.deleteAll(pokemonRepository.findPokemonByUsernameAndTeam(username, "Com"));
+        moveRepository.deleteAll(moveRepository.findMovesByUsernameAndTeam(username, "Com"));
     }
 }

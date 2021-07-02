@@ -3,20 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Create Team</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="index.css">
 </head>
-<body>
-  <table>
-    <thead class="thead-dark">
-    <tr>
-      <th>Pokemon</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="pokemon: ${pokemonList}">
-      <td th:text="${pokemon.name}">Pokemon</td>
-    </tr>
-    </tbody>
-  </table>
+<body class="background">
+  <div class="d-flex justify-content-center flex-wrap">
+    <div class="pokemonListing" th:each="pokemon: ${pokemonList}">
+      <h3 th:text="${pokemon.name}"></h3>
+      <img class="monImg" th:src="@{${'/pokemon/' + pokemon.name + '.png'}}"/>
+    </div>
+  </div>
   <form th:action="@{/create}" th:object="${team}" method="POST">
     <label for="pokemon1">Pokemon 1</label>
     <select id="pokemon1" th:field="*{pokemon1.name}">

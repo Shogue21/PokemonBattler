@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Swap Pokemon</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body class="background">
+<ul th:each="pokemon : ${userTeam}">
+    <li th:text="${pokemon.name}"></li>
+    <li><span th:text="${pokemon.health}"></span> / <span th:text="${pokemon.maxHealth}"></span></li>
+</ul>
+<form th:action="@{/swapMon}" method="POST">
+    <button name="p1" th:text="${userTeam.get(0).name}"></button>
+    <button name="p2" th:text="${userTeam.get(1).name}"></button>
+    <button name="p3" th:text="${userTeam.get(2).name}"></button>
+    <button name="p4" th:text="${userTeam.get(3).name}"></button>
+    <button name="p5" th:text="${userTeam.get(4).name}"></button>
+    <button name="p6" th:text="${userTeam.get(5).name}"></button>
+</form>
+</body>
+</html>
