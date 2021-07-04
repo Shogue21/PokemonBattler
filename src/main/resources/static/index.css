@@ -110,3 +110,16 @@ height: 80%;
     height: 80%;
 }
 
+.win {
+    text-align: center;
+    margin-top: 40vh;
+    font-weight: 6px;
+    font-size: 36px;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+.monSwap {
+    margin-right: 5px;
+}
+

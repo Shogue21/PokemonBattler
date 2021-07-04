@@ -3,20 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <title>Swap Pokemon</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="index.css">
 </head>
 <body class="background">
-<ul th:each="pokemon : ${userTeam}">
-  <li th:text="${pokemon.name}"></li>
-  <li><span th:text="${pokemon.health}"></span> / <span th:text="${pokemon.maxHealth}"></span></li>
-</ul>
-<form th:action="@{/switchMon}" method="POST">
-  <button name="p1" th:text="${userTeam.get(0).name}"></button>
-  <button name="p2" th:text="${userTeam.get(1).name}"></button>
-  <button name="p3" th:text="${userTeam.get(2).name}"></button>
-  <button name="p4" th:text="${userTeam.get(3).name}"></button>
-  <button name="p5" th:text="${userTeam.get(4).name}"></button>
-  <button name="p6" th:text="${userTeam.get(5).name}"></button>
+<div class="d-flex justify-content-center flex-wrap">
+  <div class="border d-flex flex-row monContainer" th:each="pokemon: ${userTeam}">
+    <div>
+      <a th:href="@{/team_detail(pokemon=${pokemon.name})}" th:text="${pokemon.name}"></a>
+      <p><span th:text="${pokemon.health}"></span>/<span th:text="${pokemon.maxHealth}"></span></p>
+    </div>
+    <div>
+      <img class="teamMon" th:src="@{${'/pokemon/' + pokemon.name + '.png'}}"/>
+    </div>
+  </div>
+</div>
+<form class="d-flex justify-content-center" th:action="@{/switchMon}" method="POST">
+  <button class="monSwap" name="p1" th:text="${userTeam.get(0).name}"></button>
+  <button class="monSwap" name="p2" th:text="${userTeam.get(1).name}"></button>
+  <button class="monSwap" name="p3" th:text="${userTeam.get(2).name}"></button>
+  <button class="monSwap" name="p4" th:text="${userTeam.get(3).name}"></button>
+  <button class="monSwap" name="p5" th:text="${userTeam.get(4).name}"></button>
+  <button class="monSwap" name="p6" th:text="${userTeam.get(5).name}"></button>
 </form>
 </body>
 </html>
